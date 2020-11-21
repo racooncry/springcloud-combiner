@@ -1,0 +1,43 @@
+server:
+  port: 9092
+
+spring:
+  application:
+    name: storage-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/seata_storage?allowMultiQueries=true&useSSL=false&serverTimezone=UTC
+    username: root
+    password: 123456
+  cloud:
+    nacos:   # Nacos 注册中心地址
+      discovery:
+        server-addr: 192.168.1.122:8848
+        group: SEATA_GROUP
+        namespace: public
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  tx-service-group: ${spring.application.name}-group
+  enable-auto-data-source-proxy: true
+  config:
+    type: nacos
+    nacos:
+      namespace:
+      serverAddr: 192.168.1.122:8848
+      group: SEATA_GROUP
+      userName: "nacos"
+      password: "nacos"
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 192.168.1.122:8848
+      group: SEATA_GROUP
+      namespace:
+      userName: "nacos"
+      password: "nacos"
+
+logging:
+  level:
+    io.seata: debug

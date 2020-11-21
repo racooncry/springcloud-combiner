@@ -1,0 +1,47 @@
+server:
+  port: 9091
+
+spring:
+  application:
+    name: order-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/seata_order?allowMultiQueries=true&useSSL=false&serverTimezone=UTC
+    username: root
+    password: 123456
+  cloud:
+    nacos:   # Nacos 注册中心地址
+      discovery:
+        server-addr: 192.168.1.122:8848
+        group: SEATA_GROUP
+    alibaba:
+      seata:
+        tx-service-group:  ${spring.application.name}-group
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  tx-service-group: ${spring.application.name}-group
+  enable-auto-data-source-proxy: true
+  config:
+    type: nacos
+    nacos:
+      namespace:
+      serverAddr: 192.168.1.122:8848
+      group: SEATA_GROUP
+      userName:
+      password:
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 192.168.1.122:8848
+      namespace:
+      group: SEATA_GROUP
+      userName:
+      password:
+  service:
+    vgroup-mapping:
+      order-service-group: default
+logging:
+  level:
+    io.seata: debug
