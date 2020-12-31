@@ -33,6 +33,11 @@ public class StorageController {
      */
     @RequestMapping(path = "/deduct")
     public Boolean deduct(String commodityCode, Integer count) {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         storageService.deduct(commodityCode, count);
         return true;
     }
